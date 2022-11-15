@@ -1,6 +1,6 @@
 # STAT27420-final-code
 
-This is the directory for final project of STAT 27420 Autumn 2022 by Cole, Tony, and Wanran. It is (hopefully) a replication with Machine Learning methods of the paper [*Oil and Conflict: What Does the Cross Country Evidence Really Show?*](https://www.aeaweb.org/articles?id=10.1257/mac.5.1.49) by Cotet and Tsui. 
+This is the directory for final project of STAT 27420 Autumn 2022 by Cole, Tony, and Wanran. It is (hopefully) a replication with Machine Learning methods of the paper (*Oil and Conflict: What Does the Cross Country Evidence Really Show?*)[https://www.aeaweb.org/articles?id=10.1257/mac.5.1.49] by Cotet and Tsui. 
 
 ## File paths
 
