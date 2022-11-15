@@ -26,3 +26,74 @@ Next steps:
 
 1. Check across-unit variation
 2. Check across-year variation
+
+# Nov 15, 2022 Memo: Changing paper
+
+## Why we want to change paper
+
+- The argentine paper has little variance in covariates (origins (argentine/indigenous/naturalized) and districts) within years. For example, the summary stats in year 1958:
+
+  ![Screen Shot 2022-11-15 at 2.07.15 PM](assets/Screen Shot 2022-11-15 at 2.07.15 PM.png)
+
+  - We cannot group observation by years, because we only have 5 year's data of covariates. 
+
+## New paper
+
+- https://www.aeaweb.org/articles?id=10.1257%2Fmac.5.1.49
+
+- Observation: country-year
+
+- Dataset: oil discovery and oil production for the top 62 oil countries over the period 1930-2003 + counrties with zero oil endowment
+
+  - 103 countries in total
+
+- Treatment: oil abudance
+
+- Covariates: Democracy, per capita income, rough terrain, etc.
+
+- Outcome: 
+
+  - Civil war and other violence measures (like coups)
+
+  - Defense burden
+
+    ![Screen Shot 2022-11-15 at 2.46.25 PM](assets/Screen Shot 2022-11-15 at 2.46.25 PM.png)
+
+  ### Model 1: FE, Oil reserves as treatment![Screen Shot 2022-11-15 at 2.49.46 PM](assets/Screen Shot 2022-11-15 at 2.49.46 PM.png)
+
+  - violence is not affected by oil reserves
+  - Oil reserves -> larger defense burden (among non-democratic samples)
+  - not casual because RESERVE is endogenous to violence (e.g. via oil exploration decisions)
+
+  ### Model 2: Propensity score matching, Oil discoveries as treatment
+
+  - oil discovery -> (expectation and profitability of finding oil, related to political stability) -> oil exploration
+    - -> success -> wealth increase; -> failure
+      - empirically not affected by most covariates
+  - to control for selection into exploration (wildcat drilling, first borehole)
+    - Same results to model 1![Screen Shot 2022-11-15 at 3.04.08 PM](assets/Screen Shot 2022-11-15 at 3.04.08 PM.png)
+
+  ### Sensitivity analysis
+
+## questions
+
+1. ML models that incorporate FE
+
+   1. just take country as a covariate
+   2. flatten out coutry-year observations and assume iid draw
+
+   - [ ] check covariates' variance
+
+2. Covering every analysis in the paper?
+
+   1. Yes--we will learn about robustness check and sensitivity analysis next class
+
+3. Meeting: Wed 4:30- or Fri 3:30-
+
+   - [x] send Prof Veitch an email to schedule a meeting
+
+# Misc resources
+
+ML models on matching: https://humboldt-wi.github.io/blog/research/applied_predictive_modeling_19/matching_methods/
+
+ML models on FE: https://github.com/hcchuang/Revamping-Firm-Fixed-Effects-Models-with-Machine-Learning/blob/main/README.md
