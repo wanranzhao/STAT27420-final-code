@@ -31,6 +31,8 @@ Next steps:
 
 ## Why we want to change paper
 
+./OldPaper/SanityCheck.ipynb
+
 - The argentine paper has little variance in covariates (origins (argentine/indigenous/naturalized) and districts) within years. For example, the summary stats in year 1958:
 
   ![Screen Shot 2022-11-15 at 2.07.15 PM](assets/Screen Shot 2022-11-15 at 2.07.15 PM.png)
@@ -82,7 +84,7 @@ Next steps:
    1. just take country as a covariate
    2. flatten out coutry-year observations and assume iid draw
 
-   - [ ] check covariates' variance
+   - [x] check covariates' variance
 
 2. Covering every analysis in the paper?
 
@@ -91,6 +93,16 @@ Next steps:
 3. Meeting: Wed 4:30- or Fri 3:30-
 
    - [x] send Prof Veitch an email to schedule a meeting
+
+# Nov 16, 2022: Variable's variance
+
+./covariate_variance_check.ipynb
+
+- Large variance across the whole sample
+- Small within-country variance fo covariates like religion
+  - [ ] should we throw them away in our machine learning model?
+  - [ ] ok to take country-year as observations, or aggregate to country-level? 
+- [ ] next steps?
 
 # Misc resources
 
