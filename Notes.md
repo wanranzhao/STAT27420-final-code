@@ -101,22 +101,25 @@ Next steps:
 - Large variance across the whole sample
 
 - Small within-country variance fo covariates like religion
-  - [ ] should we throw them away in our machine learning model?
-  - [ ] ok to take country-year as observations, or aggregate to country-level? 
+  - [x] should we throw them away in our machine learning model?
+  - [x] ok to take country-year as observations, or aggregate to country-level? 
     - we have a dataset that collapses the data into averages for the period 1960-2003
   
-- [ ] next steps?
-
-  - [ ] is the final paper a comparison of our and their findings, or more like a brand new presentation
-  - [ ] neutral network for panel data
-
+  - [x] is the final paper a comparison of our and their findings, or more like a brand new presentation
+  
   # Nov 18. 2022: Basic Analysis
-
-  /Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/1_basica_analysis.ipynb
-
+  
+  /Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/1_basic_analysis.ipynb
+  
   - Binarized the treatment
 
-
+- [ ] transform data into the year-to-year difference form
+- [ ] fit in models
+  - [ ] covariate set 1: country + year
+  - [ ] covariate set 2: static country characteristics + year
+  - [ ] Clustering?
+- [ ] nuances of oil discovery
+  - [ ] match countries with same probability of oil exploration together
 
 # Misc resources
 
