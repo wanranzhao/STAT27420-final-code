@@ -1,3 +1,9 @@
+# Timeline
+
+@Nov 23/24 data analysis
+
+@Nov 27 first draft
+
 # Nov 14, 2022 Talk with Victor
 
 1. Are the characteristics distinguishable for each unit? If not, then not much interesting to do (First thing to do)
@@ -114,10 +120,14 @@ Next steps:
   - Binarized the treatment
 
 - [ ] transform data into the year-to-year difference form
+
 - [ ] fit in models
   - [ ] covariate set 1: country + year
   - [ ] covariate set 2: static country characteristics + year
   - [ ] Clustering?
+  
+- [ ] Consider lagging
+
 - [ ] nuances of oil discovery
   - [ ] match countries with same probability of oil exploration together
 
