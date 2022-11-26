@@ -1,12 +1,12 @@
 ***** questions
 // 1. why there are no observations with zero wildcat or discoveryaspoPC using transformed dataset
-// 2. how matching was impletmented in the original code
+// 2. how matching was implemented in the original code
 
 ***** to-do's
 // 1. change lag
 // 2. change binarization thresholds
 	// valdisc instead of discoveryaspoPC
-// 3. change covarites (use diff)
+// 3. change covariates (use diff)
 // 4. change outcome
 
 
@@ -34,8 +34,8 @@ tsset numcode year, yearly
 
 
 // success = binarized discovery
-gen success=1 if discoveryaspoPC>0 & discoveryaspoPC!=. 
-replace success=0 if discoveryaspoPC==0
+gen success=1 if discoveryaspoPC>0.1**5 & discoveryaspoPC!=. 
+replace success=0 if discoveryaspoPC==0.1**5
 
 
 // what predicts success in oil discovery
@@ -56,8 +56,8 @@ test L.logvaloilres L.logGDP_M L.ecgrowth L.logpop_M L.logpopdens L.democracy L.
 
 
 // create wildcat_binary 
-gen wildcat_binary = 1  if wildcat>0 & wildcat!=. 
-replace wildcat_binary=0 if wildcat==0
+gen wildcat_binary = 1  if wildcat>0.1**5 & wildcat!=. 
+replace wildcat_binary=0 if wildcat==0.1**5
 
 
 // what predicts success in wildcat_binary
