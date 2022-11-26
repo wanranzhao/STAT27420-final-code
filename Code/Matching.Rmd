@@ -10,7 +10,7 @@ library(data.table)
 ```
 
 ```{r}
-df = read.csv("/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/comprehensive_new.csv")
+df = read.csv("/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/ASPO-Sample.dta")
 df = as.data.table(df)
 ```
 

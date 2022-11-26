@@ -1761,8 +1761,8 @@ library(data.table)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPSByZWFkLmNzdihcIi9Vc2Vycy96d2FucmFuL0Rlc2t0b3AvU1RBVDI3NDIwL0ZpbmFsL1NUQVQyNzQyMC1maW5hbC1jb2RlL0RhdGEvZGF0YS9jb21wcmVoZW5zaXZlX25ldy5jc3ZcIilcbmRmID0gYXMuZGF0YS50YWJsZShkZilcbmBgYCJ9 -->
-<pre class="r"><code>df = read.csv(&quot;/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/comprehensive_new.csv&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGYgPSByZWFkLmNzdihcIi9Vc2Vycy96d2FucmFuL0Rlc2t0b3AvU1RBVDI3NDIwL0ZpbmFsL1NUQVQyNzQyMC1maW5hbC1jb2RlL0RhdGEvZGF0YS9jb21wcmVoZW5zaXZlX25ld19mdWxsLmNzdlwiKVxuZGYgPSBhcy5kYXRhLnRhYmxlKGRmKVxuYGBgIn0= -->
+<pre class="r"><code>df = read.csv(&quot;/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/comprehensive_new_full.csv&quot;)
 df = as.data.table(df)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -1776,7 +1776,7 @@ m.out &lt;- matchit(success, ecgrowth, method = &quot;nearest&quot;, distance = 
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTWF0Y2hpbmciCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCmBgYHtyfQojbGlicmFyeShjc3YpCmxpYnJhcnkoIk1hdGNoSXQiKQpsaWJyYXJ5KGRhdGEudGFibGUpCmBgYAoKYGBge3J9CmRmID0gcmVhZC5jc3YoIi9Vc2Vycy96d2FucmFuL0Rlc2t0b3AvU1RBVDI3NDIwL0ZpbmFsL1NUQVQyNzQyMC1maW5hbC1jb2RlL0RhdGEvZGF0YS9jb21wcmVoZW5zaXZlX25ldy5jc3YiKQpkZiA9IGFzLmRhdGEudGFibGUoZGYpCmBgYAoKYGBge3J9CmRmWywgc3VjY2Vzczo9IGlmZWxzZShkZiRkaXNjb3Zlcnlhc3BvUEM+MCAmICFpcy5uYShkZiRkaXNjb3Zlcnlhc3BvUEMpLCAxLCBpZmVsc2UoZGlzY292ZXJ5YXNwb1BDPT0wLCAwLCBOVUxMKSldCiNkZlssIHN1Y2Nlc3M6PSBpZmVsc2UoZGYkZGlzY292ZXJ5YXNwb1BDPjAgJiAhaXMubmEoZGYkZGlzY292ZXJ5YXNwb1BDKSAmIGRmJHNtcGw9PTEsIDEsIGlmZWxzZShkaXNjb3Zlcnlhc3BvUEM9PTAgJiBkZiRzbXBsPT0xLCAwLCBOYU4pKV0KbS5vdXQgPC0gbWF0Y2hpdChzdWNjZXNzLCBlY2dyb3d0aCwgbWV0aG9kID0gIm5lYXJlc3QiLCBkaXN0YW5jZSA9ICJnbG0iKQpgYGA=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTWF0Y2hpbmciCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCmBgYHtyfQojbGlicmFyeShjc3YpCmxpYnJhcnkoIk1hdGNoSXQiKQpsaWJyYXJ5KGRhdGEudGFibGUpCmBgYAoKYGBge3J9CmRmID0gcmVhZC5jc3YoIi9Vc2Vycy96d2FucmFuL0Rlc2t0b3AvU1RBVDI3NDIwL0ZpbmFsL1NUQVQyNzQyMC1maW5hbC1jb2RlL0RhdGEvZGF0YS9BU1BPLVNhbXBsZS5kdGEiKQpkZiA9IGFzLmRhdGEudGFibGUoZGYpCmBgYAoKYGBge3J9CmRmWywgc3VjY2Vzczo9IGlmZWxzZShkZiRkaXNjb3Zlcnlhc3BvUEM+MCAmICFpcy5uYShkZiRkaXNjb3Zlcnlhc3BvUEMpLCAxLCBpZmVsc2UoZGlzY292ZXJ5YXNwb1BDPT0wLCAwLCBOVUxMKSldCiNkZlssIHN1Y2Nlc3M6PSBpZmVsc2UoZGYkZGlzY292ZXJ5YXNwb1BDPjAgJiAhaXMubmEoZGYkZGlzY292ZXJ5YXNwb1BDKSAmIGRmJHNtcGw9PTEsIDEsIGlmZWxzZShkaXNjb3Zlcnlhc3BvUEM9PTAgJiBkZiRzbXBsPT0xLCAwLCBOYU4pKV0KbS5vdXQgPC0gbWF0Y2hpdChzdWNjZXNzLCBlY2dyb3d0aCwgbWV0aG9kID0gIm5lYXJlc3QiLCBkaXN0YW5jZSA9ICJnbG0iKQpgYGA=</div>
 
 
 
