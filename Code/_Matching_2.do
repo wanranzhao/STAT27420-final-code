@@ -34,8 +34,8 @@ tsset numcode year, yearly
 
 
 // success = binarized discovery
-gen success=1 if discoveryaspoPC>0.1**5 & discoveryaspoPC!=. 
-replace success=0 if discoveryaspoPC==0.1**5
+gen success=1 if discoveryaspoPC>(0.1^5) & discoveryaspoPC!=. 
+replace success=0 if discoveryaspoPC==(0.1^5)
 
 
 // what predicts success in oil discovery
