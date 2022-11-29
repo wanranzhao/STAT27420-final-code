@@ -2,9 +2,11 @@
 ************************ STRATIFICATION AND FE *******************************
 ******************************************************************************
 
-* foreach v in onset2COWCS d2incidence2COW d3_6incidence2COW onsetUCS dincidenceU d3_6incidenceU dcoup periregular milexgdpSIPRI_diff{
+* foreach v in onset2COWCS d2incidence2COW d3_6incidence2COW onsetUCS dincidenceU d3_6incidenceU dcoup dperiregular milexgdpSIPRI_diff{
 * 	**
 * }
+
+
 
 ****************************** FULL SAMPLE ************************************ 
 
@@ -16,145 +18,157 @@
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta"
 	* work on the same sample
-	reg onset2COWCS valdisc wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg onset2COWCS  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
 	* check propensity score
-	logit wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
-		mfx
-	* pscore bloc
-	pscore wildcat_diff_binary  valoilres_diff ecgrowth logmountain, pscore(p1) blockid(b1) logit comsup 
+	logit wildcat_diff_binary oilreserves_diff crude1990P_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
+	* pscore block
+	pscore wildcat_diff_binary ecgrowth logmountain, pscore(p1) blockid(b1) logit comsup 
 	* Stratification and fixed effect -- no lag
-	reg onset2COWCS valdisc_binary wildcat_diff_binary  valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
+	reg onset2COWCS  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
 	* doubly robust IPW regression-adjusted ATE estimation
-	teffects aipw (onset2COWCS valdisc  valoilres_diff ecgrowth popdens_diff democracy_diff logmountain  ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary valoilres_diff ecgrowth logmountain, probit)
+	teffects aipw (onset2COWCS   valoilres_diff ecgrowth popdens_diff democracy_diff logmountain  ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary ecgrowth logmountain, logit)
 
 * defense burden
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta"
-	reg milexgdpSIPRI_diff valdisc wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg milexgdpSIPRI_diff  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
-		mfx
-	** no significant confounders for ps matching
-	teffects ra (onset2COWCS valoilres_diff ecgrowth popdens_diff democracy_diff logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary)
+	logit wildcat_diff_binary oilreserves_diff crude1990P_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
+	pscore wildcat_diff_binary oilreserves_diff, pscore(p1) blockid(b1) logit comsup 
+	reg onset2COWCS  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
+	teffects aipw (milexgdpSIPRI_diff valoilres_diff ecgrowth popdens_diff democracy_diff logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary oilreserves_diff, logit)
 
 ******** one year lag **************
 * onset2COWCS
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta"
-	reg onset2COWCS valdisc wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg onset2COWCS  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
-		mfx
-	pscore wildcat_diff_binary l1ecgrowth, pscore(p1) blockid(b1) logit comsup 
-	reg onset2COWCS valdisc_binary wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
-	teffects aipw (onset2COWCS l1valoilres_diff l1popdens_diff l1democracy_diff l1logmountain l1ethnic_fractionalization l1religion_fractionalization l1language_fractionalization l1leg_british) (wildcat_diff_binary l1ecgrowth, probit)
+	logit wildcat_diff_binary l1oilreserves_diff l1crude1990P_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
+		
+	pscore wildcat_diff_binary l1oilreserves_diff l1ecgrowth l1logmountain, pscore(p1) blockid(b1) logit comsup 
+	reg onset2COWCS  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
+	teffects aipw (onset2COWCS  l1popdens_diff l1democracy_diff l1logmountain l1ethnic_fractionalization l1religion_fractionalization l1language_fractionalization l1leg_british) (wildcat_diff_binary l1oilreserves_diff l1ecgrowth l1logmountain, logit)
 	
 * defense burden
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta"
-	reg milexgdpSIPRI_diff valdisc wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg milexgdpSIPRI_diff  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample) 
-	logit wildcat_diff_binary  l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
-		mfx
-	pscore wildcat_diff_binary  l1valoilres_diff, pscore(p1) blockid(b1) logitcomsup 
-	reg milexgdpSIPRI_diff valdisc_binary wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
-	teffects aipw (onset2COWCS popdens_diff democracy_diff logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary  valoilres_diff ecgrowth, probit)
+	logit wildcat_diff_binary l1oilreserves_diff l1crude1990P_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
+		
+	pscore wildcat_diff_binary l1crude1990P_diff l1ecgrowth, pscore(p1) blockid(b1) logit comsup 
+	reg milexgdpSIPRI_diff  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
+	teffects aipw (onset2COWCS  l1popdens_diff l1democracy_diff l1logmountain l1ethnic_fractionalization l1religion_fractionalization l1language_fractionalization l1leg_british) (wildcat_diff_binary l1crude1990P_diff  l1ecgrowth, logit)
 
+	
+	
 	
 ****************************** DEMO SAMPLE ************************************ 
 
 ************ no lag **************
 * onset2COWCS
-	* reinitialize the dataset
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-demo.dta"
-	* work on the same sample
-	reg onset2COWCS valdisc wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg onset2COWCS  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	* check propensity score
-	logit wildcat_diff_binary  valoilres_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
-		mfx
-	** no significant confounders	
+	logit wildcat_diff_binary oilreserves_diff crude1990P_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
+		
+	** no significant covariate for matching
+	teffects aipw (onset2COWCS  valoilres_diff ecgrowth popdens_diff democracy_diff logmountain  ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary)
 
 * defense burden
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-demo.dta"
-	reg milexgdpSIPRI_diff valdisc wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg milexgdpSIPRI_diff  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary  valoilres_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
-		mfx
-	** no significant confounders
+	logit wildcat_diff_binary oilreserves_diff crude1990P_diff  ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
+		
+	** no significant covariate for matching
+	teffects aipw (milexgdpSIPRI_diff valoilres_diff ecgrowth popdens_diff democracy_diff logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary)
 
 ******** one year lag **************
 * onset2COWCS
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-demo.dta"
-	reg onset2COWCS valdisc wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg onset2COWCS  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary  l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
-		mfx
+	logit wildcat_diff_binary l1oilreserves_diff l1crude1990P_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
 	** no significant confounders
+	teffects aipw (onset2COWCS   l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1ethnic_fractionalization l1religion_fractionalization l1language_fractionalization l1leg_british) (wildcat_diff_binary)
 
 * defense burden
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-demo.dta"
-	reg milexgdpSIPRI_diff valdisc wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg milexgdpSIPRI_diff  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary  l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
-		mfx
-	pscore wildcat_diff_binary  l1valoilres_diff l1ecgrowth, pscore(p1) blockid(b1) logitcomsup 
-	reg milexgdpSIPRI_diff valdisc_binary wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
-	** signficant l1valoilres_diff 
-
-
+	logit wildcat_diff_binary  l1oilreserves_diff l1crude1990P_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
+	pscore wildcat_diff_binary l1crude1990P_diff  l1ecgrowth, pscore(p1) blockid(b1) logit comsup 
+	reg milexgdpSIPRI_diff  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
+	teffects aipw (milexgdpSIPRI_diff  l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1ethnic_fractionalization l1religion_fractionalization l1language_fractionalization l1leg_british) (wildcat_diff_binary l1crude1990P_diff l1ecgrowth, logit)
+	
+	
 	
 *************************** NON-DEMO SAMPLE *********************************** 
 
-************ no lag **************
+
+************** no lag **************
 * onset2COWCS
 	* reinitialize the dataset
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-non-demo.dta"
-	reg onset2COWCS valdisc wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
+	* work on the same sample
+	reg onset2COWCS  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary  valoilres_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
-		mfx
-	pscore wildcat_diff_binary  ecgrowth, pscore(p1) blockid(b1) logitcomsup 
-	reg onset2COWCS valdisc_binary wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)	
+	* check propensity score
+	logit wildcat_diff_binary oilreserves_diff crude1990P_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
+		
+	* pscore block
+	pscore wildcat_diff_binary  ecgrowth, pscore(p1) blockid(b1) logit comsup 
+	* Stratification and fixed effect -- no lag
+	reg onset2COWCS  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
+	* doubly robust IPW regression-adjusted ATE estimation
+	teffects aipw (onset2COWCS  valoilres_diff ecgrowth popdens_diff democracy_diff logmountain  ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary ecgrowth, logit)
 
 * defense burden
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-non-demo.dta"
-	reg milexgdpSIPRI_diff valdisc wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg milexgdpSIPRI_diff  wildcat_diff_binary valoilres_diff ecgrowth popdens_diff democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary  valoilres_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
-		mfx
+	logit wildcat_diff_binary  oilreserves_diff crude1990P_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
+		
 	** no significant confounders
+	teffects aipw (milexgdpSIPRI_diff valoilres_diff ecgrowth popdens_diff democracy_diff logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british) (wildcat_diff_binary)
 
 ******** one year lag **************
 * onset2COWCS
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-non-demo.dta"
-	reg onset2COWCS valdisc wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
+	reg onset2COWCS  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
 		keep if e(sample)
-	logit wildcat_diff_binary  l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
-		mfx
+	logit wildcat_diff_binary  l1oilreserves_diff l1crude1990P_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
+		
+	pscore wildcat_diff_binary l1crude1990P_diff, pscore(p1) blockid(b1) logit comsup 
+	reg onset2COWCS  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade i.b1, robust cluster(numcode)
 	** no significant confounders
-
+	teffects aipw (onset2COWCS  l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1ethnic_fractionalization l1religion_fractionalization l1language_fractionalization l1leg_british) (wildcat_diff_binary)
+	
 * defense burden
 	clear all
 	use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-non-demo.dta"
-	reg milexgdpSIPRI_diff valdisc wildcat_diff_binary l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
-		keep if e(sample)
-	logit wildcat_diff_binary  l1valoilres_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
-		mfx
+	reg milexgdpSIPRI_diff  wildcat_diff_binary  l1ecgrowth l1popdens_diff l1democracy_diff i.numcode i.decade, robust cluster(numcode)
+		keep if e(sample) 
+	logit wildcat_diff_binary  l1oilreserves_diff l1crude1990P_diff l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1incidence2COW 
+		
 	** no significant confounders
+	teffects aipw (milexgdpSIPRI_diff   l1ecgrowth l1popdens_diff l1democracy_diff l1logmountain l1ethnic_fractionalization l1religion_fractionalization l1language_fractionalization l1leg_british) (wildcat_diff_binary)
+
 
 
 ********************************************************************************
 * check propensity score
-* logitwildcat_diff_binary  oilreserves_diff crude1990P_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
+* logitwildcat_diff_binary oilreserves_diff crude1990P_diff ecgrowth popdens_diff democracy_diff logmountain incidence2COW 
 ** pscore block
 * pscore wildcat ecgrowth, pscore(p2) blockid(b2) logitcomsup numblo(8)
 

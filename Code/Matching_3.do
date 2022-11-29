@@ -12,7 +12,7 @@ tsset numcode year, yearly
 drop if valdisc > 0.00001 &valdisc!=. & wildcat < 0.5
 
 // define lagged variables
-foreach v in milexgdpSIPRI_diff popdens_diff pop_M_diff valoilres_diff democracy_diff out_regdisaster_diff oilpop_impute_diff oilreserves_diff logGDP_M ecgrowth crude1990P logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british incidence2COW {
+foreach v in milexgdpSIPRI_diff popdens_diff pop_M_diff crude1990P_diff valoilres_diff democracy_diff out_regdisaster_diff oilpop_impute_diff oilreserves_diff logGDP_M ecgrowth crude1990P logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british incidence2COW {
 	gen l1`v' = L.`v'
 	gen l2`v'= L2.`v'
 	gen l5`v'= L5.`v'
