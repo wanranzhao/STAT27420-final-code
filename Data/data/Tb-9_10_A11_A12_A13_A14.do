@@ -32,6 +32,12 @@ replace valdisc=valdisc/100
 ******************** MATCHING ON Gleditsch-COW 1 year**********************
 clear all
 use "ASPO Sample.dta"
+
+***************** Wanran's edit**********************
+gen drill = 1 if wildcat > 0 & wildcat !=.
+replace drill = 0 if wildcat == 0  & wildcat !=.
+*****************************************************
+ 
 * drop obs with positive discovery and no wildcat
 drop if newdiscovery_aspo>0 & newdiscovery_aspo!=. & wildcat==0 
 * to improve readability
