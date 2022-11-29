@@ -34,8 +34,8 @@ gen wildcat_diff_binary = 1  if wildcat_diff>1.00e-05 & wildcat_diff!=.
 replace wildcat_diff_binary=0 if !(wildcat_diff>1.00e-05) & wildcat_diff!=. 
 
 // success = binarized discovery
-gen success=1 if valdisc>1.00e-05 & valdisc!=. 
-replace success=0 if !(valdisc>1.00e-05) & valdisc!=. 
+gen valdisc_binary=1 if valdisc>1.00e-05 & valdisc!=. 
+replace valdisc_binary=0 if !(valdisc>1.00e-05) & valdisc!=. 
 
 save "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta", replace
 
