@@ -9,10 +9,10 @@ tsset numcode year, yearly
 
 // data cleaning
 * drop obs with positive discovery and no wildcat
-drop if newdiscovery_aspo > 0.00001 & newdiscovery_aspo!=. & wildcat < 0.5
+drop if valdisc > 0.00001 &valdisc!=. & wildcat < 0.5
 
 // define lagged variables
-foreach v in milexgdpSIPRI_diff popdens_diff pop_M_diff valoilres_diff democracy_diff out_regdisaster_diff oilpop_impute_diff oilreserves_diff logGDP_M ecgrowth crude1990P logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british{
+foreach v in milexgdpSIPRI_diff popdens_diff pop_M_diff valoilres_diff democracy_diff out_regdisaster_diff oilpop_impute_diff oilreserves_diff logGDP_M ecgrowth crude1990P logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british incidence2COW {
 	gen l1`v' = L.`v'
 	gen l2`v'= L2.`v'
 	gen l5`v'= L5.`v'
@@ -34,8 +34,8 @@ gen wildcat_diff_binary = 1  if wildcat_diff>1.00e-05 & wildcat_diff!=.
 replace wildcat_diff_binary=0 if !(wildcat_diff>1.00e-05) & wildcat_diff!=. 
 
 // success = binarized discovery
-gen success=1 if discoveryaspoPC>1.00e-05 & discoveryaspoPC!=. 
-replace success=0 if !(discoveryaspoPC>1.00e-05) & discoveryaspoPC!=. 
+gen success=1 if valdisc>1.00e-05 & valdisc!=. 
+replace success=0 if !(valdisc>1.00e-05) & valdisc!=. 
 
 save "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta", replace
 
