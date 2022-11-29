@@ -1,67 +1,50 @@
 // load data
 clear all
-use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/Comprehensive-Sample.dta"
-// use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full.dta"
-// use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/comprehensive_new.dta"
-// use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/comprehensive_new_full.dta"
-// keep incidence2COW discoveryaspoPC index onset2COWCS onsetUCS coup periregular numcode year ecgrowth logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british no_transition popdens_diff pop_maddison_diff democracy_diff wildcat_diff out_regdisaster_diff valoilres_diff valoilres_binarize valoilres_public_diff valoilres_public_binarize oilpop_diff oilpop_binarize valoilres_impute_diff valoilres_impute_binarize oilpop_impute_diff oilpop_impute_binarize milexp_pergdpSIPRI_diff
+use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full.dta"
+// clear all
+// use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo-sample.dta"
 
 // declare panel data
 tsset numcode year, yearly
 
 // data cleaning
-* drop if missing(wildcat)
-* drop if missing(discoveryaspoPC)
+* drop obs with positive discovery and no wildcat
+drop if newdiscovery_aspo > 0.00001 & newdiscovery_aspo!=. & wildcat < 0.5
+
+// define lagged variables
+foreach v in milexgdpSIPRI_diff popdens_diff pop_M_diff valoilres_diff democracy_diff out_regdisaster_diff oilpop_impute_diff oilreserves_diff logGDP_M ecgrowth crude1990P logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british{
+	gen l1`v' = L.`v'
+	gen l2`v'= L2.`v'
+	gen l5`v'= L5.`v'
+	gen l10`v'= L10.`v'
+}
+
 
 *******************************************************************************
-
-
-// success = binarized discovery
-centile(discoveryaspoPC)
-gen success=1 if discoveryaspoPC>0.1**5 & discoveryaspoPC!=. 
-replace success=0 if discoveryaspoPC==0.1**5
-
-
-// what predicts success in oil discovery
-	// no lag
-logit success logvaloilres logGDP_M ecgrowth logpop_M logpopdens democracy logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british wildcat, robust cluster(numcode)
-
-test logvaloilres logGDP_M ecgrowth logpop_M logpopdens democracy logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british wildcat
-
-	// one year's lag
-logit success L.logvaloilres L.logGDP_M L.ecgrowth L.logpop_M L.logpopdens L.democracy L.logmountain L.ethnic_fractionalization L.religion_fractionalization L.language_fractionalization L.leg_british L.wildcat, robust cluster(numcode)
-
-test L.logvaloilres L.logGDP_M L.ecgrowth L.logpop_M L.logpopdens L.democracy L.logmountain L.ethnic_fractionalization L.religion_fractionalization L.language_fractionalization L.leg_british L.wildcat
-
-
+** To-do:
+*** try standard estimation on the sample for matching
+**** example: match on same sub-sample	
+	// xi: reg dincidence2COW     logvaldisc wildcat Llogvaloilres LlogGDP_M Lecgrowth Llogpop_M              Ldemocracy i.numcode i.decade, robust cluster(numcode)
+	// keep if e(sample)
 *******************************************************************************
 
 
 // create wildcat_diff_binary 
-gen wildcat_diff_binary = 1  if wildcat_diff>0 & wildcat_diff!=. 
-replace wildcat_diff_binary=0 if wildcat_diff<0
+gen wildcat_diff_binary = 1  if wildcat_diff>1.00e-05 & wildcat_diff!=. 
+replace wildcat_diff_binary=0 if !(wildcat_diff>1.00e-05) & wildcat_diff!=. 
 
-// what predicts success in wildcat_binary & matching
-	// no lag
-logit wildcat_diff_binary logvaloilres logGDP_M ecgrowth logpopdens democracy logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british, robust cluster(numcode)
+// success = binarized discovery
+gen success=1 if discoveryaspoPC>1.00e-05 & discoveryaspoPC!=. 
+replace success=0 if !(discoveryaspoPC>1.00e-05) & discoveryaspoPC!=. 
 
-test logvaloilres logGDP_M ecgrowth logpop_M logpopdens democracy logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british
+save "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta", replace
 
-teffects psmatch (onset2COWCS) (wildcat_diff_binary logdiscoveryaspo logGDP_M ecgrowth)
 
-	// one year's lag
-logit wildcat_diff_binary L.logvaloilres L.logGDP_M L.ecgrowth L.logpop_M L.logpopdens L.democracy L.logmountain L.ethnic_fractionalization L.religion_fractionalization L.language_fractionalization L.leg_british, robust cluster(numcode)
+keep if democracy>0.005
+save "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-demo.dta", replace
 
-test L.logvaloilres L.logGDP_M L.ecgrowth L.logpop_M L.logpopdens L.democracy L.logmountain L.ethnic_fractionalization L.religion_fractionalization L.language_fractionalization L.leg_british 
-
-teffects psmatch (onset2COWCS) (wildcat_diff_binary logdiscoveryaspo logGDP_M ecgrowth L.language_fractionalization L.leg_british)
-
-	// diff, no lag
-logit wildcat_diff_binary valoilres_diff logGDP_M ecgrowth popdens_diff democracy_diff logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british, robust cluster(numcode)
-
-test valoilres_diff logGDP_M ecgrowth popdens_diff democracy_diff logmountain ethnic_fractionalization religion_fractionalization language_fractionalization leg_british
-
-teffects psmatch (onset2COWCS) (wildcat_diff_binary valoilres_diff logGDP_M ecgrowth logmountain language_fractionalization)
-
-teffects psmatch (onset2COWCS) (wildcat_diff_binary logGDP_M ecgrowth language_fractionalization)
+clear all 
+use "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching.dta"
+drop if democracy>0.005
+save "/Users/zwanran/Desktop/STAT27420/Final/STAT27420-final-code/Data/data/aspo_full_matching-non-demo.dta", replace
 
