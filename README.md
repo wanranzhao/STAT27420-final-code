@@ -4,6 +4,12 @@ This is the directory for final project of STAT 27420 Autumn 2022 by Cole, Tony,
 
 ## File paths
 
+./Code/data_cleaning.ipynb [https://github.com/wanranzhao/STAT27420-final-code/blob/main/Code/data_cleaning.ipynb]
+- the data cleaning/pre-processing, including binarizing treatments, taking difference to make variables iid, etc.
+
+./Code/model_fitting.ipynb [https://github.com/wanranzhao/STAT27420-final-code/blob/main/Code/model_fitting.ipynb]
+- all the modeling work done for the project
+
 ./Data.zip
 - original dataset downloaded from (the journal website)[https://www.aeaweb.org/articles?id=10.1257/mac.5.1.49]
 
